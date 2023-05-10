@@ -1,0 +1,18 @@
+[
+  {
+    "model": "bank_api.Account",
+    "pk": 1,
+    "fields": {
+      "companyName": "RyanAir",
+      "balance": 0.0
+    }
+  },
+  {
+    "model": "bank_api.Account",
+    "pk": 2,
+    "fields": {
+      "companyName": "easyJet",
+      "balance": 0.0
+    }
+  }
+]
