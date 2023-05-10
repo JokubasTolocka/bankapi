@@ -103,7 +103,7 @@ def refund(request):
         response = requests.post('http://127.0.0.1:8000/airline/cancel_booking',json=payload)
         data = response.json()
 
-        if data.Status == True:
+        if data["Status"] == True:
             return JsonResponse({'status': True})
         
     return JsonResponse({'status': True})
