@@ -3,7 +3,7 @@
     "model": "bank_api.Account",
     "pk": 1,
     "fields": {
-      "companyName": "RyanAir",
+      "companyName": "Cathay Pacific",
       "balance": 0.0
     }
   },
@@ -11,7 +11,23 @@
     "model": "bank_api.Account",
     "pk": 2,
     "fields": {
-      "companyName": "easyJet",
+      "companyName": "FlyLo",
+      "balance": 0.0
+    }
+  },
+  {
+    "model": "bank_api.Account",
+    "pk": 3,
+    "fields": {
+      "companyName": "Emirates",
+      "balance": 0.0
+    }
+  },
+  {
+    "model": "bank_api.Account",
+    "pk": 4,
+    "fields": {
+      "companyName": "KevAir",
       "balance": 0.0
     }
   }
