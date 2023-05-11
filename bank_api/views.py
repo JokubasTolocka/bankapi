@@ -6,27 +6,34 @@ from datetime import datetime
 from .serializers import TransactionSerializer
 from .models import Account, Transaction
 
-def exchange(_, currencyFrom, amountFrom, currencyTo):
+def exchange(_, currencyFrom, amountFrom):
     # Converting to floats
     try:
         amountFrom = float(amountFrom)
     except ValueError:
         return HttpResponseBadRequest('Invalid amount')
+
+    currencies = {
+        'GBP': 1,
+        'USD': 1.25,
+        'EUR': 1.14,
+        'JPY': 168.22,
+        'AUD': 1.86,
+        'CAD': 1.68,
+        'CHF': 1.11,
+        'CNY': 8.71,
+        'SEK': 12.91,
+        'NZD': 1.98,
+    }
+
+    try: 
+        convertedCurrency = amountFrom / currencies[currencyFrom]
+    except KeyError:
+        return JsonResponse({'message': 'Cannot convert from this currency'})
+
+        
     
-    # Making an API request to exchange
-    response = requests.get(f'https://api.freecurrencyapi.com/v1/latest?apikey=tbSPK9nG61DqLzffT04z52YoaCd7cL9FGUypps8B&currencies={currencyTo}&base_currency={currencyFrom}')
-
-    if response.status_code == 200:
-        data = response.json()
-
-        # Converting the currency
-        rate = data['data'][currencyTo]
-
-        convertedCurrency = amountFrom * rate
-
-        return JsonResponse({'convertedAmount': convertedCurrency})
-    else:
-        return JsonResponse({'message': 'Request failed'})
+    return JsonResponse({'convertedAmount': convertedCurrency})
 
 @csrf_exempt
 def pay(request):
