@@ -83,16 +83,15 @@ def refund(request):
         body = request.body.decode('utf-8')
         data = json.loads(body)
 
-        transactionId = data.get('transactionId')
-        reservationId = data.get('reservationId')
+        bookingID = data.get('bookingID')
 
         try:
-            transactionId = float(transactionId)
+            bookingID = float(bookingID)
         except ValueError:
-            return HttpResponseBadRequest('Invalid transactionId')
+            return HttpResponseBadRequest('Invalid bookingID')
         
         try:
-            foundTransaction = Transaction.objects.get(id = transactionId)
+            foundTransaction = Transaction.objects.get(bookingID = bookingID)
         except foundTransaction.DoesNotExist:
             return HttpResponseNotFound({'message': 'The recipient account is missing'})
         
@@ -107,9 +106,7 @@ def refund(request):
         foundTransaction.save()
         foundAccount.save()
 
-        bookingId = foundTransaction.bookingID
-
-        airlineIndicator = bookingId[:2]
+        airlineIndicator = bookingID[:2]
 
         airlines = {
             "00": "ed19km2b",
@@ -118,7 +115,7 @@ def refund(request):
             "03": "safwanchowdhury",
         }
 
-        payload = {'fields':{'bookingID': bookingId}}
+        payload = {'fields':{'bookingID': bookingID}}
         response = requests.post(f'https://{airlines[airlineIndicator]}.pythonanywhere.com/airline/cancel_booking',json=payload)
         data = response.json()
 
