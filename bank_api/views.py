@@ -116,5 +116,8 @@ def refund(request):
         if data.get("status") == "success":
             return JsonResponse({'status': "success"})
         
+        if data.get("status") == "failed":
+            return JsonResponse({'status': "failed", "message": "failed to cancel booking on airline"})
+        
     return JsonResponse({'status': "failed"})
 
