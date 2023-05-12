@@ -38,8 +38,7 @@ def exchange(_, currencyFrom, amountFrom):
 @csrf_exempt
 def pay(request):
     if (request.method == 'POST'):
-        body = request.body.decode('utf-8')
-        data = json.loads(body)
+        data = json.loads(request.body)
 
         amount = data.get('amount')
         companyName = data.get('companyName')
@@ -73,16 +72,14 @@ def pay(request):
             'amount': amount,
             'status': True,
         }
-
-        print(data)
-
+        
         serializer = TransactionSerializer(data = data)
 
         if serializer.is_valid():
             transaction = serializer.save()
-            return JsonResponse({'status': True, 'transactionId': transaction.id})
+            return JsonResponse({'status': "success", 'transactionId': transaction.id})
         
-        return HttpResponseNotFound({'Failed to create a transaction'})
+        return JsonResponse({'status': "failed"})
         
 
 @csrf_exempt
