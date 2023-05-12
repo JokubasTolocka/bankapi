@@ -92,8 +92,8 @@ def refund(request):
         
         try:
             foundTransaction = Transaction.objects.get(bookingID = bookingID)
-        except foundTransaction.DoesNotExist:
-            return HttpResponseNotFound({'message': 'The recipient account is missing'})
+        except:
+            return HttpResponseNotFound({'message': 'The transaction is missing'})
         
         try:
             foundAccount = Account.objects.get(companyName = foundTransaction.companyName)
