@@ -1,4 +1,4 @@
-from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse, HttpResponseNotFound
+from django.http import JsonResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import requests
 import json
@@ -85,19 +85,14 @@ def refund(request):
         bookingID = data.get('bookingID')
 
         try:
-            bookingID = float(bookingID)
-        except ValueError:
-            return HttpResponseBadRequest('Invalid bookingID')
-        
-        try:
             foundTransaction = Transaction.objects.get(bookingID = bookingID)
         except:
-            return HttpResponseNotFound({'message': 'The transaction is missing'})
+            return JsonResponse({'status': "failed", 'message': 'The transaction is missing'})
         
         try:
             foundAccount = Account.objects.get(companyName = foundTransaction.companyName)
         except foundAccount.DoesNotExist:
-            return HttpResponseNotFound({'message': 'The recipient account is missing'})
+            return JsonResponse({'status': "failed", 'message': 'The recipient account is missing'})
         
         foundAccount.balance = foundAccount.balance - foundTransaction.amount
         foundTransaction.status = False
