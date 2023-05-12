@@ -9,4 +9,4 @@ class AccountSerializer(serializers.ModelSerializer):
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
-        fields = ["companyName", "date", "amount", "status"]
+        fields = ["companyName", "bookingID", "date", "amount", "status"]

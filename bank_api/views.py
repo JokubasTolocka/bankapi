@@ -49,6 +49,11 @@ def pay(request):
             amount = float(amount)
         except ValueError:
             return HttpResponseBadRequest('Invalid amount')
+        
+        try:
+            bookingID = int(bookingID)
+        except ValueError:
+            return HttpResponseBadRequest('Invalid bookingID')
 
         try:
             foundAccount = Account.objects.get(companyName=companyName)
@@ -68,6 +73,8 @@ def pay(request):
             'amount': amount,
             'status': True,
         }
+
+        print(data)
 
         serializer = TransactionSerializer(data = data)
 
