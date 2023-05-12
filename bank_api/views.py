@@ -11,7 +11,7 @@ def exchange(_, currencyFrom, amountFrom):
     try:
         amountFrom = float(amountFrom)
     except ValueError:
-        return HttpResponseBadRequest('Invalid amount')
+        return JsonResponse({'status': 'failed', 'message': 'Invalid amount'})
 
     currencies = {
         'GBP': 1,
@@ -29,11 +29,11 @@ def exchange(_, currencyFrom, amountFrom):
     try: 
         convertedCurrency = amountFrom / currencies[currencyFrom]
     except KeyError:
-        return JsonResponse({'message': 'Cannot convert from this currency'})
+        return JsonResponse({'status': 'failed', 'message': 'Cannot convert from this currency'})
 
         
     
-    return JsonResponse({'convertedAmount': convertedCurrency})
+    return JsonResponse({'status': 'success', 'convertedAmount': convertedCurrency})
 
 @csrf_exempt
 def pay(request):
@@ -47,12 +47,12 @@ def pay(request):
         try:
             amount = float(amount)
         except ValueError:
-            return HttpResponseBadRequest('Invalid amount')
+            return JsonResponse({'status': 'failed', 'message': 'Invalid amount'})
 
         try:
             foundAccount = Account.objects.get(companyName=companyName)
         except foundAccount.DoesNotExist:
-            return HttpResponseNotFound({'message': 'The recipient account is missing'})
+            return JsonResponse({'status': 'failed', 'message': 'Cannot get account'})
         
         foundAccount.balance = foundAccount.balance + amount
 
