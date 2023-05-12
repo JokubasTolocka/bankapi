@@ -109,7 +109,7 @@ def refund(request):
             "03": "safwanchowdhury",
         }
 
-        payload = {'bookingID': bookingID}
+        payload = {'bookingID': str(bookingID)}
         response = requests.post(f'https://{airlines[airlineIndicator]}.pythonanywhere.com/airline/cancel_booking', json=payload)
         data = response.json()
 
