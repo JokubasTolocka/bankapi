@@ -8,11 +8,11 @@ class Transaction(models.Model):
     status = models.BooleanField()
 
     def __str__(self):
-        return self.name
+        return self.companyName
 
 class Account(models.Model):
     companyName = models.CharField(max_length=50)
     balance = models.FloatField()
 
     def __str__(self):
-        return self.name
+        return self.companyName
