@@ -109,8 +109,8 @@ def refund(request):
             "03": "safwanchowdhury",
         }
 
-        payload = {'fields':{'bookingID': bookingID}}
-        response = requests.post(f'https://{airlines[airlineIndicator]}.pythonanywhere.com/airline/cancel_booking',json=payload)
+        payload = {'bookingID': bookingID}
+        response = requests.post(f'https://{airlines[airlineIndicator]}.pythonanywhere.com/airline/cancel_booking', json=payload)
         data = response.json()
 
         if data.get("status") == "success":
