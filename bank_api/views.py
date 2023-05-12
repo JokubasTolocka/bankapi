@@ -48,11 +48,6 @@ def pay(request):
             amount = float(amount)
         except ValueError:
             return HttpResponseBadRequest('Invalid amount')
-        
-        try:
-            bookingID = int(bookingID)
-        except ValueError:
-            return HttpResponseBadRequest('Invalid bookingID')
 
         try:
             foundAccount = Account.objects.get(companyName=companyName)
@@ -112,12 +107,23 @@ def refund(request):
         foundTransaction.save()
         foundAccount.save()
 
-        payload = {'fields':{'ReservationID': reservationId}}
-        response = requests.post('http://127.0.0.1:8000/airline/cancel_booking',json=payload)
+        bookingId = foundTransaction.bookingID
+
+        airlineIndicator = bookingId[:2]
+
+        airlines = {
+            "00": "ed19km2b",
+            "01": "mavericklow",
+            "02": "krzsztfkml",
+            "03": "safwanchowdhury",
+        }
+
+        payload = {'fields':{'bookingID': bookingId}}
+        response = requests.post(f'https://{airlines[airlineIndicator]}.pythonanywhere.com/airline/cancel_booking',json=payload)
         data = response.json()
 
         if data["Status"] == True:
-            return JsonResponse({'status': True})
+            return JsonResponse({'status': "success"})
         
-    return JsonResponse({'status': True})
+    return JsonResponse({'status': "failed"})
 
