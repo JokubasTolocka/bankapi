@@ -122,7 +122,7 @@ def refund(request):
         response = requests.post(f'https://{airlines[airlineIndicator]}.pythonanywhere.com/airline/cancel_booking',json=payload)
         data = response.json()
 
-        if data["Status"] == True:
+        if data.get("status") == "success":
             return JsonResponse({'status': "success"})
         
     return JsonResponse({'status': "failed"})
