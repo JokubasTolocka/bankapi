@@ -43,6 +43,7 @@ def pay(request):
 
         amount = data.get('amount')
         companyName = data.get('companyName')
+        bookingID = data.get('bookingID')
 
         try:
             amount = float(amount)
@@ -62,6 +63,7 @@ def pay(request):
 
         data = {
             'companyName': companyName, 
+            'bookingID': bookingID,
             'date': now, 
             'amount': amount,
             'status': True,
