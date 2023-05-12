@@ -72,7 +72,25 @@ def pay(request):
 
         if serializer.is_valid():
             transaction = serializer.save()
-            return JsonResponse({'status': "success", 'transactionId': transaction.id})
+
+            airlineIndicator = bookingID[:2]
+
+            airlines = {
+                "00": "ed19km2b",
+                "01": "mavericklow",
+                "02": "krzsztfkml",
+                "03": "safwanchowdhury",
+            }
+
+            payload = {'bookingID': str(bookingID), "amount": amount}
+            response = requests.post(f'https://{airlines[airlineIndicator]}.pythonanywhere.com/airline/confirm_booking', json=payload)
+            data = response.json()
+
+            if data.get("status") == "success":
+                return JsonResponse({'status': "success", 'transactionId': transaction.id})
+            
+            if data.get("status") == "failed":
+                return JsonResponse({'status': "failed", "message": "failed to confirm booking"})
         
         return JsonResponse({'status': "failed"})
         
