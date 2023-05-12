@@ -80,8 +80,7 @@ def pay(request):
 @csrf_exempt
 def refund(request):
     if (request.method == 'POST'):
-        body = request.body.decode('utf-8')
-        data = json.loads(body)
+        data = json.loads(request.body)
 
         bookingID = data.get('bookingID')
 
